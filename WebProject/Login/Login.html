@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="Login.css">
+    <title>Login Page</title>
+</head>
+<body>
+    <div>
+        <h2>Login To MyPetakom</h2>
+        <div class="container">
+        <form action="SystemLogin.php" method="post">
+
+            <label for="email">Email</label>
+            <input type="text" name="username" required><br>
+
+            <label for="password">Password</label>
+            <input type="password" name="password" required><br>
+
+            <label for="role">Select Your Role</label>
+            <select name="role" id="role" required>
+
+                <option value="">Select Role</option>
+                <option value="student">Student</option>
+                <option value="staff">Event Advisor</option>
+                <option value="admin">Coordinator</option>
+            </select>
+            <br>
+            <button type="submit" value="Login">Login</button>
+        </form>
+        </div>
+    </div>
+</body>
+</html>

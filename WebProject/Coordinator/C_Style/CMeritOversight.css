@@ -1,0 +1,174 @@
+/* General styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #f4f4f9;
+}
+
+.container {
+    display: flex;
+    flex: 1;
+}
+
+/* Top heading styles */
+.top-heading-container {
+    background-color: #009fa2;
+    color: white;
+    text-align: center;
+    padding: 15px 0;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+/* Sidebar styles */
+.sidebar {
+    width: 250px;
+    background-color: white;
+    color: black;
+    padding: 20px;
+    border-right: 1px solid #ddd;
+    text-align: center;
+    font-size: 16px;
+}
+
+.sidebar .logo img {
+    width: 120px;
+    height: 120px;
+    object-fit: contain;
+    margin-bottom: 15px;
+}
+
+.sidebar img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    margin: 10px auto;
+    border-radius: 50%;
+}
+
+.sidebar h2 {
+    margin-top: 10px;
+    font-size: 18px;
+}
+
+.sidebar button {
+    display: block;
+    width: 100%;
+    color: black;
+    background-color: transparent;
+    border: none;
+    text-align: center;
+    padding: 10px 15px;
+    margin: 5px 0;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-size: 16px;
+}
+
+.sidebar button.active {
+    background-color: #ddd;
+    font-weight: bold;
+}
+
+.sidebar button:hover {
+    background-color: #f0f0f0;
+}
+
+.sidebar a {
+    display: block;
+    color: black;
+    text-decoration: none;
+    text-align: center;
+    padding: 10px 15px;
+    margin: 5px 0;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    font-size: 16px;
+}
+
+.sidebar a:hover {
+    background-color: #f0f0f0;
+}
+
+/* Header styles */
+.header {
+    background-color: #1c4690;
+    color: white;
+    padding: 15px;
+    text-align: center;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.main-content {
+    flex: 1;
+    padding: 20px;
+}
+
+/* Application table */
+.application-table table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.application-table th, .application-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+
+.application-table th {
+    background-color: #009fa2;
+    color: white;
+}
+
+.application-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.application-table tr:hover {
+    background-color: #f1f1f1;
+}
+
+.application-table .view-button {
+    background-color: #1c4690;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.application-table .view-button:hover {
+    background-color: #143366;
+}
+
+.back-button {
+    text-align: center;
+}
+
+.back-button button {
+    background-color: #009fa2;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.back-button button:hover {
+    background-color: #007f82;
+}

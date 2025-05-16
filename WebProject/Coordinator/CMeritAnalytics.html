@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="CMeritAnalytics.css">
+    <title>Coordinator - Merit Analytics</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Include Chart.js for graphs -->
+</head>
+<body>
+    <!-- Top Header -->
+    <div class="top-heading-container">
+        MyPETAKOM - Merit Analytics & Report
+    </div>
+
+    <div class="container">
+        <div class="sidebar">
+            <!-- UMP Logo -->
+            <div class="logo">
+                <img src="/TestImages/UMP Logo.jpg" alt="UMP Logo">
+            </div>
+            <!-- Profile Picture -->
+            <img src="/TestImages/CoordinatorProfile.jpg" alt="Profile Picture">
+            <h2>Coordinator</h2>
+            <button>Dashboard</button>
+            <button>Membership Application</button>
+            <button>User Profile</button>
+            <button class="active">Merit</button>
+            <a href="#">Logout</a>
+        </div>
+        <div class="main-content">
+            <div class="header">
+                <h1>Hello, [Coordinator Name]</h1>
+                <h2>Merit Analytics & Report</h2>
+            </div>
+            <div class="analytics-section">
+                <div class="chart-container">
+                    <h3>Total Merits by Event Level</h3>
+                    <canvas id="eventLevelChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h3>Approved vs Rejected over Time</h3>
+                    <canvas id="approvalChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h3>Committee vs Participant Points</h3>
+                    <canvas id="rolePointsChart"></canvas>
+                </div>
+            </div>
+            <div class="back-button">
+                <button onclick="location.href='CoordinatorDashboard.html'">Back to Dashboard</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Chart.js configurations for the graphs
+
+        // Total Merits by Event Level
+        const eventLevelCtx = document.getElementById('eventLevelChart').getContext('2d');
+        new Chart(eventLevelCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Local', 'National', 'International'],
+                datasets: [{
+                    label: 'Merit Points',
+                    data: [120, 200, 300],
+                    backgroundColor: ['#009fa2', '#1c4690', '#d9534f']
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false }
+                }
+            }
+        });
+
+        // Approved vs Rejected over Time
+        const approvalCtx = document.getElementById('approvalChart').getContext('2d');
+        new Chart(approvalCtx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+                datasets: [
+                    {
+                        label: 'Approved',
+                        data: [10, 15, 20, 25, 30],
+                        borderColor: '#009fa2',
+                        fill: false
+                    },
+                    {
+                        label: 'Rejected',
+                        data: [5, 7, 10, 12, 15],
+                        borderColor: '#d9534f',
+                        fill: false
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { position: 'top' }
+                }
+            }
+        });
+
+        // Committee vs Participant Points
+        const rolePointsCtx = document.getElementById('rolePointsChart').getContext('2d');
+        new Chart(rolePointsCtx, {
+            type: 'pie',
+            data: {
+                labels: ['Committee', 'Participant'],
+                datasets: [{
+                    data: [60, 40],
+                    backgroundColor: ['#1c4690', '#009fa2']
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { position: 'top' }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

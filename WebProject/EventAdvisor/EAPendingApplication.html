@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="EAPendingApplication.css">
+    <title>Event Advisor - Pending Merit Applications</title>
+</head>
+<body>
+    <!-- Top Header -->
+    <div class="top-heading-container">
+        MyPETAKOM - Pending Merit Applications
+    </div>
+
+    <div class="container">
+        <div class="sidebar">
+            <!-- UMP Logo -->
+            <div class="logo">
+                <img src="/TestImages/UMP Logo.jpg" alt="UMP Logo">
+            </div>
+            <!-- Profile Picture -->
+            <img src="/TestImages/IMG_9255.JPG" alt="Profile Picture">
+            <h2>Event Advisor</h2>
+            <button>Dashboard</button>
+            <button>Events</button>
+            <button class="active">Merit</button>
+            <button>Committee</button>
+            <button>Attendance</button>
+            <a href="#">Logout</a>
+        </div>
+        <div class="main-content">
+            <div class="header">
+                <h1>Pending Merit Applications</h1>
+            </div>
+            <div class="application-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Student</th>
+                            <th>Event</th>
+                            <th>Date Submitted</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Ahmad Zaki</td>
+                            <td>UMPSA AI Talk</td>
+                            <td>2025-04-28</td>
+                            <td><button class="view-details">View Details</button></td>
+                        </tr>
+                        <tr>
+                            <td>Nor Afiqah</td>
+                            <td>Java Workshop</td>
+                            <td>2025-04-27</td>
+                            <td><button class="view-details">View Details</button></td>
+                        </tr>
+                        <tr>
+                            <td>...</td>
+                            <td>...</td>
+                            <td>...</td>
+                            <td><button class="view-details">View Details</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="back-button">
+                <button onclick="location.href='EventAdvisorDashboard.html'">Back to Dashboard</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

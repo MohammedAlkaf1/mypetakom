@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="ApplyForMissingMerit.css">
+    <title>Apply for Missing Merit</title>
+</head>
+<body>
+    <!-- Top Header -->
+    <div class="top-heading-container">
+        Apply for Missing Merit
+    </div>
+
+    <div class="container">
+        <div class="sidebar">
+            <!-- UMP Logo -->
+            <div class="logo">
+                <img src="/TestImages/UMP Logo.jpg" alt="UMP Logo">
+            </div>
+            <!-- Profile Picture -->
+            <img src="/TestImages/IMG_9255.JPG" alt="Profile Picture">
+            <h2>Hamzah Zeiad (CB23007)</h2>
+            <a href="#">Profile</a>
+            <a href="#">Events</a>
+            <a href="#">Attendance</a>
+            <a href="#" class="active">Merit Management</a>
+            <a href="#">Logout</a>
+        </div>
+        <div class="main-content">
+            <div class="header">
+                <h1>Apply for Missing Merit</h1>
+            </div>
+            <div class="apply-form">
+                <label for="event">Select Event:</label>
+                <select id="event">
+                    <option value="event1">Event 1</option>
+                    <option value="event2">Event 2</option>
+                </select>
+
+                <label for="reason">Reason/Comment:</label>
+                <textarea id="reason" rows="4" placeholder="Enter your reason or comment"></textarea>
+
+                <label for="upload">Upload Official Participation Letter:</label>
+                <input type="file" id="upload">
+
+                <div class="form-buttons">
+                    <button>Submit Claim</button>
+                    <button>Cancel Application</button>
+                </div>
+            </div>
+            <div class="back-button">
+                <button>Back to Dashboard</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
