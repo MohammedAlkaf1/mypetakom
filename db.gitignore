@@ -1,0 +1,4 @@
+$serverName = "localhost";
+$userName = "root"; // default XAMPP MySQL userName
+$password = ""; // default XAMPP MySQL password
+$dbName = "mypetakom"; // the database we created earlier
