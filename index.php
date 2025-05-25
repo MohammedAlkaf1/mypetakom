@@ -1,202 +1,77 @@
-<?php
-session_start();
-
-$servername = "localhost";
-$username = "root"; // default XAMPP MySQL username
-$password = ""; // default XAMPP MySQL password
-$dbname = "mypetakom"; // the database we created earlier
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $name = $_POST['name'];  // 'name' from the form input
-    $password = $_POST['password'];
-    $role = $_POST['role'];
-
-    // Protect against SQL injection
-    $name = $conn->real_escape_string($name);
-    $role = $conn->real_escape_string($role);
-
-    // Query to check login credentials
-    $query = "SELECT * FROM user WHERE name = '$name' AND role = '$role'";
-    $result = $conn->query($query);
-
-    if ($result->num_rows > 0) {
-        $user = $result->fetch_assoc(); // Fetch user details
-        $storedPassword = $user['password'];
-
-        // Check if password is hashed or not
-        if ($password === $storedPassword) {
-            // Login successful for plaintext password
-            $_SESSION['id'] = $user['user_id'];
-            $_SESSION['name'] = $user['name'];
-            $_SESSION['role'] = $user['role'];
-
-            // Redirect to the appropriate page based on the role
-            if ($user['role'] === 'admin' || $user['role'] === 'staff') {
-                header('Location: dashboard.php');
-            } else {
-                header('Location: dashboard.php');
-            }
-            exit(); // Ensure script stops here
-        } else {
-            $error = "Invalid name, password, or role!";
-        }
-    } else {
-        $error = "Invalid name, password, or role!";
-    }
-}
-?>
-
-
-
-
-
-
 <!DOCTYPE html>
 <html lang="en">
-<!-- [Head] start -->
-
 <head>
-  <title>Login | Mypetakom</title>
-  <!-- [Meta] -->
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="description" content="Mantis is made using Bootstrap 5 design framework. Download the free admin template & use it for your project.">
-  <meta name="keywords" content="Mantis, Dashboard UI Kit, Bootstrap 5, Admin Template, Admin Dashboard, CRM, CMS, Bootstrap Admin Template">
-  <meta name="author" content="CodedThemes">
-
-  <!-- [Favicon] icon -->
-  <link rel="icon" href="assets/images/favicon.svg" type="image/x-icon"> <!-- [Google Font] Family -->
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&display=swap" id="main-font-link">
-<!-- [Tabler Icons] https://tablericons.com -->
-<link rel="stylesheet" href="assets/fonts/tabler-icons.min.css" >
-<!-- [Feather Icons] https://feathericons.com -->
-<link rel="stylesheet" href="assets/fonts/feather.css" >
-<!-- [Font Awesome Icons] https://fontawesome.com/icons -->
-<link rel="stylesheet" href="assets/fonts/fontawesome.css" >
-<!-- [Material Icons] https://fonts.google.com/icons -->
-<link rel="stylesheet" href="assets/fonts/material.css" >
-<!-- [Template CSS Files] -->
-<link rel="stylesheet" href="assets/css/style.css" id="main-style-link" >
-<link rel="stylesheet" href="assets/css/style-preset.css" >
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome To The Petakom System</title>
+    <link rel="stylesheet" href="../MyPetakonUpdatedSystem/shared_assests/CSS/main.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../MyPetakonUpdatedSystem/shared_assests/JS/main.js"></script>
 
 </head>
-<!-- [Head] end -->
-<!-- [Body] Start -->
-
 <body>
-  <!-- [ Pre-loader ] start -->
-  <div class="loader-bg">
-    <div class="loader-track">
-      <div class="loader-fill"></div>
-    </div>
-  </div>
-  <!-- [ Pre-loader ] End -->
-
-  <div class="auth-main">
-    <div class="auth-wrapper v3">
-      <div class="auth-form">
-        <div class="auth-header">
-          <a href="#"><img src="assets/images/LogoUMP.png" alt="img"></a>
-        </div>
- <div class="card my-5">
-    <div class="card-body">
-        <!-- Form Action and Method -->
-        <form action="index.php" method="POST">
-          
-            <div class="d-flex justify-content-between align-items-end mb-4">
-                <h3 class="mb-0"><b>Login to Mypetakom </b></h3>
-                <a href="#" class="link-primary">Don't have an account?</a>
-            </div>
-
-            <!-- name Field -->
-            <div class="form-group mb-3">
-                <label class="form-label">Name</label>
-                <input type="text" id="name" name="name" class="form-control" placeholder="name" required>
-            </div>
-
-            <!-- Password Field -->
-            <div class="form-group mb-3">
-                <label class="form-label">Password</label>
-                <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
-            </div>
-
-            <!-- Role Selection Dropdown -->
-            <div class="form-group mb-3">
-                <label for="role" class="form-label">Role</label>
-                <select name="role" id="role" class="form-select" required>
-                    <option value="admin" selected>Admin</option>
-                    <option value="staff">Staff</option>
-                    <option value="student">Student</option>
-                </select>
-            </div>
-
-            <!-- Submit Button -->
-            <div class="d-grid mt-4">
-                <button type="submit" class="btn btn-primary">Login</button>
-            </div>
-        </form>
-    </div>
-</div>
-
-        <div class="auth-footer row">
-          <!-- <div class=""> -->
-            <div class="col my-1">
-              <p class="m-0"><a href="#"></a></p>
-            </div>
-            <div class="col-auto my-1">
-              <ul class="list-inline footer-link mb-0">
-                <li class="list-inline-item"><a href="#">Home</a></li>
-                <li class="list-inline-item"><a href="#">Privacy Policy</a></li>
-                <li class="list-inline-item"><a href="#">Contact us</a></li>
-              </ul>
-            </div>
-          <!-- </div> -->
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- [ Main Content ] end -->
-  <!-- Required Js -->
-  <script src="assets/js/plugins/popper.min.js"></script>
-  <script src="assets/js/plugins/simplebar.min.js"></script>
-  <script src="assets/js/plugins/bootstrap.min.js"></script>
-  <script src="assets/js/fonts/custom-font.js"></script>
-  <script src="assets/js/pcoded.js"></script>
-  <script src="assets/js/plugins/feather.min.js"></script>
-
-  
-  
-  
-  
-  <script>layout_change('light');</script>
-  
-  
-  
-  
-  <script>change_box_container('false');</script>
-  
-  
-  
-  <script>layout_rtl_change('false');</script>
-  
-  
-  <script>preset_change("preset-1");</script>
-  
-  
-  <script>font_change("Public-Sans");</script>
-  
+    <div><?php include('../MyPetakonUpdatedSystem/reuseablePhpFiles/header.php'); ?> </div>
     
- 
-</body>
-<!-- [Body] end -->
+ <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+  <div class="carousel-indicators">
+    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+  </div>
 
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img src="/MyPetakonUpdatedSystem/shared/img/images3.png" 
+     class="d-block w-100" 
+     style="height: 400px; object-fit: contain;" 
+     alt="First slide">
+    </div>
+         <div class="carousel-item">
+           <img src="/MyPetakonUpdatedSystem/shared/img/images1.png" 
+     class="d-block w-100" 
+     style="height: 400px; object-fit: cover;" 
+     alt="First slide">
+ 
+    </div>
+    <div class="carousel-item">
+           <img src="/MyPetakonUpdatedSystem/shared/img/images2.jpg" 
+     class="d-block w-100" 
+     style="height: 400px; object-fit: cover" 
+     alt="First slide">
+    </div>
+  </div>
+
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true" style="filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(0deg);"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true" style="filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(0deg);"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+<!-- About Petakom System -->
+<div class="container mt-5">
+  <div class="card">
+    <div class="card-body">
+      <h4 class="card-title text-center mb-3">About Petakom System</h4>
+      <p class="card-text text-center" style="text-align:justify">
+        MyPetakom is a web-based system developed for the Faculty of Computing, UMPSA.
+        It helps manage Petakom membership, events, attendance, and merit tracking.
+        The system supports multiple user roles: students, Event Advisors, and administrators.
+        Students can register for events and claim merits online.
+        Event Advisors can create events and manage attendance with QR codes.
+        Coordinators can review data, approve merits, and view reports.
+        MyPetakom improves transparency and reduces manual paperwork.
+        The system also provides real-time dashboards and statistics.
+        It is designed to be user-friendly, secure, and mobile responsive.
+        This platform supports better co-curricular management for all FK students.
+      </p>
+    </div>
+  </div>
+</div>
+  <div><?php include('../MyPetakonUpdatedSystem/reuseablePhpFiles/footer.php'); ?> </div>
+</body>
 </html>
