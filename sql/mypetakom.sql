@@ -13,7 +13,6 @@ CREATE TABLE Student (
     user_id INT PRIMARY KEY,
     major VARCHAR(20),
     student_matric_id VARCHAR(50),
-    student_matric_card VARCHAR(100),
     FOREIGN KEY (user_id) REFERENCES User(user_id)
 );
 
@@ -56,6 +55,7 @@ CREATE TABLE Membership (
     user_id INT,
     status ENUM('approved', 'pending', 'not_approved') NOT NULL,
     approved_by INT,
+    student_matric_card VARCHAR(100),
     FOREIGN KEY (user_id) REFERENCES User(user_id),
     FOREIGN KEY (approved_by) REFERENCES User(user_id)
 );
