@@ -12,7 +12,7 @@
 
 <nav class="navbar navbar-expand-lg bg-body-tertiary shadow-sm px-4">
   <div class="container-fluid">
-    <a class="navbar-brand" href="/MyPetakonUpdatedSystem/index.php"><img src="../shared/img/images3.png" alt=""></a>
+    <a class="navbar-brand" href="#"><img src="../shared/img/images3.png" alt=""></a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
             data-bs-target="#navbarNav" aria-controls="navbarNav"
             aria-expanded="false" aria-label="Toggle navigation">
@@ -22,7 +22,7 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link" href="../MyPetakonUpdatedSystem/index.php">Home</a>
+          <a class="nav-link" href="../../mypetakom/index.php">Home</a>
         </li>
         </li>
       </ul>
@@ -48,7 +48,7 @@ if (isset($_SESSION['login_error'])) {
 <!-- Login Modal -->
 <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
   <div class="modal-dialog">
-    <form method="POST" action="../MyPetakonUpdatedSystem/modules/login_membership/login.php">
+    <form method="POST" action="../../mypetakom/login.php">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="loginModalLabel" style="text-align: center;">Welcome To My Petakom System</h5>

@@ -12,7 +12,7 @@
 
 </head>
 <body>
-    <div><?php include('../MyPetakonUpdatedSystem/reuseablePhpFiles/header.php'); ?> </div>
+    <div><?php include('../mypetakom/reuseablePhpFiles/header.php'); ?> </div>
     
  <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
   <div class="carousel-indicators">
@@ -23,20 +23,20 @@
 
   <div class="carousel-inner">
     <div class="carousel-item active">
-      <img src="/MyPetakonUpdatedSystem/shared/img/images3.png" 
+      <img src="../mypetakom/shared/img/images3.png" 
      class="d-block w-100" 
      style="height: 400px; object-fit: contain;" 
      alt="First slide">
     </div>
          <div class="carousel-item">
-           <img src="/MyPetakonUpdatedSystem/shared/img/images1.png" 
+           <img src="../mypetakom/shared/img/images2.jpg" 
      class="d-block w-100" 
      style="height: 400px; object-fit: cover;" 
      alt="First slide">
  
     </div>
     <div class="carousel-item">
-           <img src="/MyPetakonUpdatedSystem/shared/img/images2.jpg" 
+           <img src="../mypetakom/shared/img/images1.png" 
      class="d-block w-100" 
      style="height: 400px; object-fit: cover" 
      alt="First slide">
@@ -72,6 +72,6 @@
     </div>
   </div>
 </div>
-  <div><?php include('../MyPetakonUpdatedSystem/reuseablePhpFiles/footer.php'); ?> </div>
+  <div><?php include('../mypetakom/reuseablePhpFiles/footer.php'); ?> </div>
 </body>
 </html>
