@@ -4,9 +4,10 @@ include('db.php');
 include('header.php');
 include('sidebar.php');
 
-if (!isset($_SESSION['name'])) {
-    header('Location: admindashboard.php');
+if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
+    header("Location: ../../mypetakom/dashboard/admin_dashboard.php");
     exit();
+    
 }
 ?>
 
