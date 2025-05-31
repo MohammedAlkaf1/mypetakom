@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Login</title>
 </head>
 <body>
     <?php
@@ -49,7 +49,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         header("Location: dashboard/advisor_dashboard.php");
         exit();
     case 'student':
-        header("Location: dashboard/student_dashboard.php");
+        header("Location: modules/module4/student_dashboard.php");
         exit();
     default:
         $_SESSION['login_error'] = "Role unauthorized.";
@@ -59,12 +59,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         } else {
             $_SESSION['login_error'] = "Invalid credentials.";
-            header("Location: ../../index.php");
+            header("Location: index.php");
             exit();
         }
     } else {
         $_SESSION['login_error'] = "User not found.";
-        header("Location: ../../index.php");
+        header("Location: index.php");
         exit();
     }
 
