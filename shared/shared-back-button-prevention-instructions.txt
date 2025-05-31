@@ -1,0 +1,35 @@
+PHP HEADERS INSTRUCTIONS: 
+
+// Add these lines to prevent back button access (Inside php code at the very top after "session_start();")
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
+header("Expires: 0");
+
+
+JS BACK BUTTON PREVENTION INSTRUCTIONS: 
+
+<!-- Add this line in the <head> section of protected pages -->
+<script src="../../shared/js/prevent-back-button.js"></script>
+
+<!-- Add this attribute to the <body> tag -->
+<body data-login-url="../../login.php">
+
+
+Adjust the path for both "head" line and attribute to the "body" tag based on your interface position. 
+
+it will look somewhat like this: 
+
+<!-- Add this line in the <head> section of protected pages -->
+<script src="path/to/shared/js/prevent-back-button.js"></script>
+
+<!-- Add this attribute to the <body> tag -->
+<body data-login-url="path/to/your/login.php">  
+
+
+Then add the following meta tags: 
+
+<!-- Add these meta tags -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
