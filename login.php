@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Login</title>
 </head>
 <body>
     <?php
 session_start();
-require_once '../../sql/db.php';
+require_once 'sql/db.php';
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $email = trim($_POST['email']);
@@ -16,10 +16,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $selectedRole = $_POST['role'];
 
     if (empty($email) || empty($password) || empty($selectedRole)) {
-        $_SESSION['login_error'] = "Please fill in all the required fields.";
-        header("Location: ../MyPetakonUpdatedSystem/index.php");
-        exit();
-    }
+    $_SESSION['login_error'] = "Please fill in all the required fields.";
+    header("Location: index.php");
+    exit();
+
+}
+
 
     $sql = "SELECT * FROM user WHERE email = ?";
     $stmt = $conn->prepare($sql);
@@ -40,28 +42,29 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $_SESSION['role'] = $user['role'];
 
             switch ($user['role']) {
-                case 'admin':
-                    header("Location: ../../dashboard/cordinator_dashboard.php");
-                    exit();
-                case 'staff':
-                    header("Location: ../../dashboard/advisor_dashboard.php");
-                    exit();
-                case 'student':
-                    header("Location: ../../dashboard/student_dashboard.php");
-                    exit();
-                default:
-                    $_SESSION['login_error'] = "Role unauthorized.";
-                    header("Location: ../../index.php");
-                    exit();
-            }
+    case 'admin':
+        header("Location: dashboard/admin_dashboard.php");
+        exit();
+    case 'staff':
+        header("Location: dashboard/advisor_dashboard.php");
+        exit();
+    case 'student':
+        header("Location: modules/module4/student_dashboard.php");
+        exit();
+    default:
+        $_SESSION['login_error'] = "Role unauthorized.";
+        header("Location: index.php");
+        exit();
+}
+
         } else {
             $_SESSION['login_error'] = "Invalid credentials.";
-            header("Location: ../../index.php");
+            header("Location: index.php");
             exit();
         }
     } else {
         $_SESSION['login_error'] = "User not found.";
-        header("Location: ../../index.php");
+        header("Location: index.php");
         exit();
     }
 
@@ -69,9 +72,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $conn->close();
 } else {
     $_SESSION['login_error'] = "Invalid request.";
-    header("Location: /MyPetakonUpdatedSystem/index.php");
+header("Location: index.php");
     exit();
 }
+
 ?>
 
 </body>

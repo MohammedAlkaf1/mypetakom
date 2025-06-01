@@ -1,0 +1,52 @@
+# Shared Components Usage Guide
+
+## How to Use Header and Sidebar in Your Modules
+
+### 1. Include CSS Files
+Add these lines in your `<head>` section:
+
+```html
+<link rel="stylesheet" href="/mypetakom/shared/css/shared-layout.css">
+<link rel="stylesheet" href="/mypetakom/shared/css/components.css">
+```
+
+### 2. Set Page Variables (Before including header)
+```php
+<?php
+// Set page title
+$page_title = "Your Module Name";
+
+// Set logout URL (relative to your file)
+$logout_url = "../../logout.php";
+
+// Set dashboard URL (relative to your file)
+$dashboard_url = "../../dashboard/student_dashboard.php";
+
+// Optional: Add module-specific navigation
+$module_nav_items = [
+    'your_module.php' => 'Your Module',
+    'another_page.php' => 'Another Page'
+];
+$current_module = 'your_module.php'; // Set active item
+?>
+```
+
+### 3. Include Components
+```html
+<body>
+    <?php include_once '../../shared/components/header.php'; ?>
+    
+    <div class="container">
+        <?php include_once '../../shared/components/sidebar.php'; ?>
+        
+        <div class="main-content">
+            <!-- Your content here -->
+        </div>
+    </div>
+</body>
+```
+
+### 4. Path Examples for Different Module Locations
+- Module in `/modules/module1/`: Use `../../shared/`
+- Module in `/dashboard/`: Use `../shared/`
+- Module in root: Use `shared/`
