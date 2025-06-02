@@ -1,7 +1,7 @@
 
 -- USER TABLE
 CREATE TABLE User (
-    user_id INT PRIMARY KEY AUTO INCREAMENT,
+    user_id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(100),
     email VARCHAR(100) UNIQUE,
     password VARCHAR(255),
@@ -26,7 +26,7 @@ CREATE TABLE Staff (
 
 -- QR CODE TABLE
 CREATE TABLE QRCode (
-    qrcode_id INT PRIMARY KEY,
+    qrcode_id INT PRIMARY KEY AUTO_INCREMENT,
     code_url TEXT
 );
 
@@ -34,7 +34,7 @@ CREATE TABLE QRCode (
 
 -- EVENT TABLE
 CREATE TABLE Event (
-    event_id INT PRIMARY KEY,
+    event_id INT PRIMARY KEY AUTO_INCREMENT,
     qrcode_id INT,
     title VARCHAR(200),
     description TEXT,
@@ -46,12 +46,12 @@ CREATE TABLE Event (
     FOREIGN KEY (qrcode_id) REFERENCES QRCode(qrcode_id),
     FOREIGN KEY (added_by) REFERENCES User(user_id)
 );
-ALTER TABLE `event` ADD `geolocation` INT(100) NULL AFTER `approval_letter`; 
+ALTER TABLE `event` ADD `geolocation` VARCHAR(100) NULL AFTER `approval_letter`; 
 
 
 -- MEMBERSHIP TABLE 
 CREATE TABLE Membership (
-    membership_id INT PRIMARY KEY,
+    membership_id INT PRIMARY KEY AUTO_INCREMENT,
     user_id INT,
     status ENUM('approved', 'pending', 'not_approved') NOT NULL,
     approved_by INT,
@@ -63,13 +63,13 @@ CREATE TABLE Membership (
 
 -- COMMITTEE ROLE TABLE
 CREATE TABLE Committee_Role (
-    cr_id INT PRIMARY KEY,
+    cr_id INT PRIMARY KEY AUTO_INCREMENT,
     cr_desc VARCHAR(100)
 );
 
 -- EVENT COMMITTEE TABLE
 CREATE TABLE EventCommittee (
-    committee_id INT PRIMARY KEY,
+    committee_id INT PRIMARY KEY AUTO_INCREMENT,
     event_id INT,
     user_id INT,
     cr_id INT,
@@ -80,7 +80,7 @@ CREATE TABLE EventCommittee (
 
 -- ATTENDANCE TABLE
 CREATE TABLE Attendance (
-    attendance_id INT PRIMARY KEY,
+    attendance_id INT PRIMARY KEY AUTO_INCREMENT,
     event_id INT,
     check_in_time DATETIME,
     location VARCHAR(200),
@@ -91,7 +91,7 @@ CREATE TABLE Attendance (
 
 -- ATTENDANCE SLOT TABLE
 CREATE TABLE Attendance_Slot (
-    attendance_slot_id INT PRIMARY KEY,
+    attendance_slot_id INT PRIMARY KEY AUTO_INCREMENT,
     attendance_id INT,
     user_id INT,
     qrcode_id INT,
@@ -104,7 +104,7 @@ CREATE TABLE Attendance_Slot (
 
 -- MERIT APPLICATION TABLE
 CREATE TABLE Merit_Application (
-    merit_id INT PRIMARY KEY,
+    merit_id INT PRIMARY KEY AUTO_INCREMENT,
     event_id INT,
     event_level ENUM('International', 'National', 'State', 'District', 'UMPSA') NOT NULL,
     points_main_committee INT,
@@ -117,7 +117,7 @@ CREATE TABLE Merit_Application (
 );
 -- VIEW AWARDED MERITS TABLE
 CREATE TABLE View_Awarded_Merits (
-    student_merit_id INT PRIMARY KEY,
+    student_merit_id INT PRIMARY KEY AUTO_INCREMENT,
     user_id INT,
     merit_id INT,
     role VARCHAR(50),
@@ -127,7 +127,7 @@ CREATE TABLE View_Awarded_Merits (
 );
 -- MERIT CLAIMS TABLE
 CREATE TABLE Merit_Claims (
-    claim_id INT PRIMARY KEY,
+    claim_id INT PRIMARY KEY AUTO_INCREMENT,
     user_id INT,
     event_id INT,
     role_claimed ENUM('Main Committee', 'Committee', 'Participant') NOT NULL,
