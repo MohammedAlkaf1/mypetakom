@@ -1,4 +1,29 @@
 <?php
+/*
+session_start();
+
+// Prevent back button access
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
+header("Expires: 0");
+
+// Check login
+if (!isset($_SESSION['user_id'])) {
+    header("Location: ../login.php");
+    exit();
+}*/
+$page_title = "MyPetakom - update event";
+$logout_url = "../../../logout.php";
+$dashboard_url = "../../../dashboard/advisor_dashboard.php";
+$module_nav_items = [
+    '../../module1/profile.php'=>'Profile',
+    './event_advisor.php' => 'Events',
+    '../../module3/attendance.php' => 'Attendance Activity',
+];
+$current_module = '';
+?>
+<?php
 include "connection.php";
 
 $event_id = isset($_GET['event_id']) ? (int) $_GET['event_id'] : 0;
@@ -44,6 +69,9 @@ $row = $result->fetch_assoc();
 <head>
     <title>Update Event</title>
     <link rel="stylesheet" href="../Styles/create_event.css">
+    <link rel="stylesheet" href="../../../shared/css/shared-layout.css">
+    <link rel="stylesheet" href="../../../shared/css/components.css">
+    
     <style>
         .main-content h2 {
             font-size: 2rem;
@@ -52,20 +80,10 @@ $row = $result->fetch_assoc();
     </style>
 </head>
 <body>
-    <nav>
-        <div class="logo">MyPetakom</div>
-        <div class="logout"><button>Logout</button></div>
-    </nav>
+    <?php include '../../../shared/components/header.php'; ?>
 
     <div class="container">
-        <aside class="sidebar">
-            <ul>
-                <li><a href="#">Profile</a></li>
-                <li><a href="#">Events</a></li>
-                <li><a href="#">Manage Attendance</a></li>
-                <li><a href="#">Merit Applications</a></li>
-            </ul>
-        </aside>
+        <?php include '../../../shared/components/sidebar.php'; ?>
 
         <main class="main-content">
             <h2>Update Event</h2>

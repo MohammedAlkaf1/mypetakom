@@ -1,4 +1,29 @@
 <?php
+/*
+session_start();
+
+// Prevent back button access
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
+header("Expires: 0");
+
+// Check login
+if (!isset($_SESSION['user_id'])) {
+    header("Location: ../login.php");
+    exit();
+}*/
+$page_title = "MyPetakom - Assign committees";
+$logout_url = "../../../logout.php";
+$dashboard_url = "../../../dashboard/advisor_dashboard.php";
+$module_nav_items = [
+    '../../module1/profile.php'=>'Profile',
+    './event_advisor.php' => 'Events',
+    '../../module3/attendance.php' => 'Attendance Activity',
+];
+$current_module = '';
+?>
+<?php
 $host = "localhost";
 $user = "root";
 $pass = "";
@@ -39,14 +64,15 @@ $committees = $conn->query("SELECT ec.committee_id, u.name, cr.cr_desc FROM even
 <head>
     <meta charset="UTF-8">
     <title>Assign Committee</title>
-    <link rel="stylesheet" href="../Styles/navbar.css">
-    <link rel="stylesheet" href="../Styles/sidebar.css">
     <link rel="stylesheet" href="../Styles/committee.css">
+    <link rel="stylesheet" href="../../../shared/css/shared-layout.css">
+    <link rel="stylesheet" href="../../../shared/css/components.css">
+    
 </head>
 <body>
-<?php include './navbar.php'; ?>
+<?php include '../../../shared/components/header.php'; ?>
 <div class="container" id="container">
-    <?php include './sidebar.php'; ?>
+    <?php include '../../../shared/components/sidebar.php'; ?>
     <main class="main-content">
         <div class="form-wrapper">
             <h2>Assign Committees for Event ID: <?= $event_id ?></h2>
