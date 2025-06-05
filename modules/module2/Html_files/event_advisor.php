@@ -1,6 +1,6 @@
 
 <?php
-/*
+
 session_start();
 
 // Prevent back button access
@@ -13,7 +13,7 @@ header("Expires: 0");
 if (!isset($_SESSION['user_id'])) {
     header("Location: ../login.php");
     exit();
-}*/
+}
 $page_title = "MyPetakom - Manage events";
 $logout_url = "../../../logout.php";
 $dashboard_url = "../../../dashboard/advisor_dashboard.php";
