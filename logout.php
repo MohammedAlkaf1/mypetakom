@@ -1,11 +1,5 @@
 <?php
 session_start();
-<<<<<<< HEAD
-session_unset();
-session_destroy();
-header("Location: ../index.php"); // Adjust path if needed
-exit();
-=======
 
 // Unset all session variables
 session_unset();
@@ -32,12 +26,8 @@ header("Expires: 0");
 </head>
 <body>
     <script>
-        // Set logout flag in sessionStorage
         sessionStorage.setItem('user_logged_out', 'true');
-        
-        // Redirect to login after setting the flag
-        window.location.replace('index.php'); 
+        window.location.replace('index.php');
     </script>
 </body>
 </html>
->>>>>>> 9d7e000d278549f93959e0e0b6b47064b44a0a88
