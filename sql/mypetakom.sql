@@ -82,10 +82,12 @@ CREATE TABLE EventCommittee (
 CREATE TABLE Attendance (
     attendance_id INT PRIMARY KEY AUTO_INCREMENT,
     event_id INT,
+     qrcode_id INT,
     check_in_time DATETIME,
     location VARCHAR(200),
     attendance_status ENUM('Active', 'Deactive') NOT NULL,
-    FOREIGN KEY (event_id) REFERENCES Event(event_id)
+    FOREIGN KEY (event_id) REFERENCES Event(event_id),
+     FOREIGN KEY (qrcode_id) REFERENCES QRCode(qrcode_id),
 
 );
 
@@ -94,10 +96,10 @@ CREATE TABLE Attendance_Slot (
     attendance_slot_id INT PRIMARY KEY AUTO_INCREMENT,
     attendance_id INT,
     user_id INT,
-    qrcode_id INT,
+   
     status ENUM('present', 'absent') NOT NULL,
     FOREIGN KEY (user_id) REFERENCES User(user_id),
-    FOREIGN KEY (qrcode_id) REFERENCES QRCode(qrcode_id),
+   
     FOREIGN KEY  (attendance_id) REFERENCES Attendance (attendance_id)
 );
 
