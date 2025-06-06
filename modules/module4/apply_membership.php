@@ -21,20 +21,29 @@ $current_module = 'apply_membership.php';
 
 $message = '';
 
+$user_id = $_SESSION['user_id'];
+ 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = $_POST['name'];
-    $studentId = $_POST['student_id'];
-    $email = $_POST['email'];
+$studentId = $_POST['student_id'];
+$email = $_POST['email'];
+$uploadDir = '../../uploads/';
+$fileName = basename($_FILES['student_card']['name']);
+$targetFile = $uploadDir . time() . '_' . $fileName;
 
-    // Handle file upload
-    $uploadDir = '../../uploads/';
-    $fileName = basename($_FILES['student_card']['name']);
-    $targetFile = $uploadDir . time() . '_' . $fileName;
+// ✅ Check if this user already applied and still pending
+$check = $conn->prepare("SELECT * FROM Membership WHERE user_id = ? AND status = 'pending'");
+$check->bind_param("i", $user_id);
+$check->execute();
+$result = $check->get_result();
 
+if ($result->num_rows > 0) {
+    $message = "You have already submitted a membership application. Please wait for approval.";
+} else {
+    // ✅ Proceed to upload file and insert new record
     if (move_uploaded_file($_FILES['student_card']['tmp_name'], $targetFile)) {
-       $stmt = $conn->prepare("INSERT INTO membership (user_id, status, student_matric_card) VALUES (?, 'pending', ?)");
-       $stmt->bind_param("is", $user_id, $targetFile);
-
+        $stmt = $conn->prepare("INSERT INTO Membership (user_id, status, student_matric_card) VALUES (?, 'pending', ?)");
+        $stmt->bind_param("is", $user_id, $targetFile);
 
         if ($stmt->execute()) {
             $message = "Application submitted successfully!";
@@ -44,6 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         $message = "File upload failed.";
     }
+}
 }
 ?>
 

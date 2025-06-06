@@ -18,7 +18,7 @@ $page_title = "MyPetakom - Manage events";
 $logout_url = "../../../logout.php";
 $dashboard_url = "../../../dashboard/advisor_dashboard.php";
 $module_nav_items = [
-    '../../module1/profile.php'=>'Profile',
+    
     './event_advisor.php' => 'Events',
     '../../module3/attendance.php' => 'Attendance Activity',
 ];

@@ -28,6 +28,7 @@ $page_title = "MyPetakom - Advisor Dashboard";
 $logout_url = "../logout.php";
 $dashboard_url = "advisor_dashboard.php";
 $module_nav_items = [
+    
     '../modules/module2/Html_files/event_advisor.php' => 'Events',
     '../modules/module3/attendance.php' => 'Attendance Activity',
 ];
