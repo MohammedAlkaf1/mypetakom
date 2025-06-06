@@ -87,7 +87,7 @@ CREATE TABLE Attendance (
     location VARCHAR(200),
     attendance_status ENUM('Active', 'Deactive') NOT NULL,
     FOREIGN KEY (event_id) REFERENCES Event(event_id),
-     FOREIGN KEY (qrcode_id) REFERENCES QRCode(qrcode_id),
+     FOREIGN KEY (qrcode_id) REFERENCES QRCode(qrcode_id)
 
 );
 
