@@ -130,6 +130,11 @@ $events = $conn->query($query);
                                         <input type="hidden" name="event_id" value="<?php echo $row['event_id']; ?>" />
                                         <button type="submit" class="btn btn-sm btn-secondary">View</button>
                                     </form>
+                                    <!-- Delete Button -->
+                                     <form method="POST" action="delete_attendance.php" style="display:inline;">
+                                        <input type="hidden" name="event_id" value="<?php echo $row['event_id']; ?>" />
+                                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete the attendance for this event?')">Delete</button>
+                                    </form>
                                 <?php } else {
                                     echo "-";
                                 } ?>
