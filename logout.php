@@ -19,12 +19,19 @@ header("Pragma: no-cache");
 header("Expires: 0");
 ?>
 
+// Set logout flag for JS
+echo "<script>
+    sessionStorage.setItem('user_logged_out', 'true');
+    window.location.href = 'index.php';
+</script>";
+exit();
+
 <!DOCTYPE html>
 <html>
 <head>
     <title>Logging out...</title>
 </head>
-<body>
+<body data-login-url="index.php">
     <script>
         sessionStorage.setItem('user_logged_out', 'true');
         window.location.replace('index.php');

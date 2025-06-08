@@ -18,7 +18,7 @@ require_once '../sql/db.php';
 
 $user_id = $_SESSION['user_id'];
 $page_title = "MyPetakom - Admin Dashboard";
-$logout_url = "../../logout.php";
+$logout_url = "../logout.php";
 $dashboard_url = "admin_dashboard.php"; // or full path if needed
 
 $module_nav_items = [

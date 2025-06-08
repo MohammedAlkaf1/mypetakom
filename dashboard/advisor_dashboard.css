@@ -12,12 +12,7 @@ body, html {
   margin-top: 50px;
 }
 
-.main-content {
-  flex: 1;
-  padding: 2rem;
-  margin-left: 220px;
-  background-color: #f9f9f9;
-}
+
 
 h2 {
   color: #004080;
