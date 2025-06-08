@@ -1,10 +1,34 @@
 <?php
-// Start session
 session_start();
+
+// Add these lines to prevent back button access
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
+header("Expires: 0");
+
+// Check if user is logged in
+if (!isset($_SESSION['user_id'])) {
+    header("Location: ../../login.php");
+    exit();
+}
+
 // Include database connection
-include '../sql/db.php';
-include '../header.php';
-include 'sidebar_admin.php';
+require_once '../sql/db.php';
+
+$user_id = $_SESSION['user_id'];
+$page_title = "MyPetakom - Admin Dashboard";
+$logout_url = "../../logout.php";
+$dashboard_url = "admin_dashboard.php"; // or full path if needed
+
+$module_nav_items = [
+    '../dashboard/admin_dashboard.php' => 'Dashboard',
+    '../modules/module1/view_users.php' => 'View Users',
+    '../modules/module1/manage_membership.php' => 'Manage Membership',
+    '../modules/module1/register_user.php' => 'Register New User',
+    '../modules/module1/profile.php' => 'Profile'
+];
+$current_module = 'admin_dashboard.php'; // Set active menu
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['approve']) && isset($_POST['membership_id'])) {
@@ -114,16 +138,18 @@ if (isset($_POST['reject'])) {
     <title>Admin Dashboard - MyPetakom</title>
     <link rel="stylesheet" href="admin_dashboard.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css" rel="stylesheet">
-</head>
-<body>
+    <link rel="stylesheet" href="../shared/css/shared-layout.css">
+    <link rel="stylesheet" href="../shared/css/components.css">
 
-     <?php include 'sidebar_admin.php'; ?>
-    
-    <!-- Main Content Area -->
-    <div class="main-content" style="margin-left: 250px;">
-         <header class="top-header" style="background-color: #f8f9fa; padding: 10px 20px; border-bottom: 1px solid #ddd;">
-            
-        </header>
+</head>
+<body data-login-url="../../login.php">
+    <?php include_once '../shared/components/header.php'; ?>
+
+    <div class="container">
+    <?php include_once '../shared/components/sidebar.php'; ?>
+
+     <div class="main-content">
+         
         <!-- Page Title -->
         <div class="section">
             <h1 style="color: #333; margin-bottom: 10px;">

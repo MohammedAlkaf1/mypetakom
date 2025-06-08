@@ -1,9 +1,33 @@
 <?php
 session_start();
-include '../../sql/db.php';
-include '../../header.php';
-include '../../dashboard/sidebar_admin.php';
+// Add these lines to prevent back button access
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
+header("Expires: 0");
 
+// Check if user is logged in
+if (!isset($_SESSION['user_id'])) {
+    header("Location: ../../login.php");
+    exit();
+}
+
+// Include database connection
+require_once '../../sql/db.php';
+
+$user_id = $_SESSION['user_id'];
+$page_title = "MyPetakom - Profile";
+$logout_url = "../../logout.php";
+$dashboard_url = "../../dashboard/admin_dashboard.php"; // or full path if needed
+
+$module_nav_items = [
+    '../../dashboard/admin_dashboard.php' => 'Dashboard',
+    '../../modules/module1/view_users.php' => 'View Users',
+    '../../modules/module1/manage_membership.php' => 'Manage Membership',
+    '../../modules/module1/register_user.php' => 'Register New User',
+    '../../modules/module1/profile.php' => 'Profile'
+];
+$current_module = 'profile.php'; // Set active menu
 
 // Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
@@ -51,6 +75,8 @@ if (!$user) {
     <meta charset="UTF-8">
     <title>Edit My Profile</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../shared/css/shared-layout.css">
+    <link rel="stylesheet" href="../../shared/css/components.css">
     <style>
         .main-content {
             margin-left: 260px;
@@ -113,8 +139,12 @@ if (!$user) {
         }
     </style>
 </head>
-<body>
-    <div class="main-content">
+<body data-login-url="../../login.php">
+    <?php include_once '../../shared/components/header.php'; ?>
+
+    <div class="container">
+        <?php include_once '../../shared/components/sidebar.php'; ?>    <div class="main-content">
+        
         <div class="edit-container">
             <h2><i class="bi bi-person-lines-fill"></i> Edit My Profile</h2>
 

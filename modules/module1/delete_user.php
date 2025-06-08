@@ -1,23 +1,22 @@
 <?php
 session_start();
-include '../../sql/db.php';                      
-include '../../header.php';                     
-include '../../dashboard/sidebar_admin.php'; 
+require_once '../../sql/db.php';
 
-// Only admin can delete users
+// Only allow admin
 if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
     echo "Access denied.";
     exit();
 }
 
+// Check if user_id is provided
 if (!isset($_GET['user_id'])) {
-    header("Location: modules/module1/view_users.php?delete=missing");
+    echo "Missing user ID.";
     exit();
 }
 
 $user_id = intval($_GET['user_id']);
 
-// Step 1: Delete from dependent tables that reference user_id
+// Step 1: Delete related rows in other tables
 $tables_by_user = [
     'View_Awarded_Merits',
     'Merit_Claims',
@@ -28,43 +27,46 @@ $tables_by_user = [
 ];
 
 foreach ($tables_by_user as $table) {
-    // Delete rows where user_id matches
     $stmt = $conn->prepare("DELETE FROM $table WHERE user_id = ?");
     $stmt->bind_param("i", $user_id);
     $stmt->execute();
     $stmt->close();
 }
 
-// Step 2: Delete from Merit_Application using applied_by column
+// Step 2: Delete from Merit_Application (applied_by)
 $stmt = $conn->prepare("DELETE FROM Merit_Application WHERE applied_by = ?");
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
 $stmt->close();
 
-
-// Step 3: Delete from Event where the user was recorded as added_by
+// Step 3: Delete from Event (added_by)
 $stmt = $conn->prepare("DELETE FROM Event WHERE added_by = ?");
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
 $stmt->close();
 
-// Step 4: Delete from Student table using user_id as primary key
+// Step 4: Delete from Student table
 $stmt = $conn->prepare("DELETE FROM Student WHERE user_id = ?");
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
 $stmt->close();
 
-// Step 5: Finally, delete the user from the User table
+// Step 5: Finally delete from User table
 $stmt = $conn->prepare("DELETE FROM User WHERE user_id = ?");
 $stmt->bind_param("i", $user_id);
 if ($stmt->execute()) {
     $stmt->close();
-    header("Location: /mypetakom/modules/module1/view_users.php?delete=success");
+    echo "<script>
+        alert('User deleted successfully.');
+        window.location.href = 'view_users.php';
+    </script>";
     exit();
 } else {
     $stmt->close();
-    header("Location: /mypetakom/modules/module1/view_users.php?delete=error");
+    echo "<script>
+        alert('Failed to delete user.');
+        window.location.href = 'view_users.php';
+    </script>";
     exit();
 }
-
 ?>
