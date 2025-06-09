@@ -36,39 +36,75 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 'admin') {
 }
 
 // Handle approve/reject actions
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['approve']) && isset($_POST['membership_id'])) {
         $membershipId = intval($_POST['membership_id']);
-        $approvedBy = $_SESSION['user_id']; // Get admin user ID from session
-        
-        $stmt = $conn->prepare("UPDATE membership SET status = 'approved', approved_by = ? WHERE membership_id = ?");
-        $stmt->bind_param("ii", $approvedBy, $membershipId);
-        
-        if ($stmt->execute()) {
-            $_SESSION['success_message'] = 'Membership approved successfully!';
-        } else {
-            $_SESSION['error_message'] = 'Error approving membership.';
-        }
+        $approvedBy = $_SESSION['user_id'];
+
+        // Step 1: Get user_id from membership table
+        $stmt = $conn->prepare("SELECT user_id FROM membership WHERE membership_id = ?");
+        $stmt->bind_param("i", $membershipId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $membership = $result->fetch_assoc();
+        $userId = $membership['user_id'] ?? null;
         $stmt->close();
-        
+
+        if ($userId) {
+            // Step 2: Update membership status
+            $update = $conn->prepare("UPDATE membership SET status = 'approved', approved_by = ? WHERE membership_id = ?");
+            $update->bind_param("ii", $approvedBy, $membershipId);
+            if ($update->execute()) {
+
+                // Step 3: Check if student already exists
+                $checkStudent = $conn->prepare("SELECT * FROM student WHERE user_id = ?");
+                $checkStudent->bind_param("i", $userId);
+                $checkStudent->execute();
+                $checkResult = $checkStudent->get_result();
+                $checkStudent->close();
+
+                if ($checkResult->num_rows === 0) {
+                    // Get real data from hidden inputs in the form
+                    $major = htmlspecialchars(trim($_POST['major']));
+                    $matric_id = htmlspecialchars(trim($_POST['matric_id']));
+
+                    $insertStudent = $conn->prepare("INSERT INTO student (user_id, major, student_matric_id) VALUES (?, ?, ?)");
+                    $insertStudent->bind_param("iss", $userId, $major, $matric_id);
+                    $insertStudent->execute();
+                    $insertStudent->close();
+                }
+
+                $_SESSION['success_message'] = 'Membership approved and student added.';
+            } else {
+                $_SESSION['error_message'] = 'Failed to approve membership.';
+            }
+
+            $update->close();
+        } else {
+            $_SESSION['error_message'] = 'Invalid membership ID.';
+        }
+
     } elseif (isset($_POST['reject']) && isset($_POST['membership_id'])) {
         $membershipId = intval($_POST['membership_id']);
-        
+
         $stmt = $conn->prepare("UPDATE membership SET status = 'not_approved' WHERE membership_id = ?");
         $stmt->bind_param("i", $membershipId);
-        
+
         if ($stmt->execute()) {
             $_SESSION['success_message'] = 'Membership rejected successfully!';
         } else {
             $_SESSION['error_message'] = 'Error rejecting membership.';
         }
+
         $stmt->close();
     }
 
-    // Redirect to prevent form resubmission
+    // Prevent form resubmission
     header("Location: manage_membership.php");
     exit();
 }
+
 
 // Get filter parameter
 $status_filter = isset($_GET['status']) ? $_GET['status'] : 'all';
@@ -507,7 +543,7 @@ tbody tr:hover {
                                            target="_blank" class="btn-view">
                                         </a>
                                     <?php else: ?>
-                                        <span style="color: #999;">No file</span>
+                                        <span style="color: #999;"></span>
                                     <?php endif; ?>
                                 </td>
                                 <td>
