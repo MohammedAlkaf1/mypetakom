@@ -9,7 +9,7 @@ header("Expires: 0");
 
 // Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
-    header("Location: ../../login.php");
+    header("Location: ../../../login.php");
     exit();
 }
 
@@ -27,7 +27,6 @@ $module_nav_items = [
     'events.php' => 'Events',
     'attendance.php' => 'Attendance',
     'merit_management.php' => 'Merit Management',
-    'apply_membership.php' => 'Apply Membership'
 ];
 $current_module = 'events.php';
 
@@ -80,9 +79,19 @@ $current_module = 'events.php';
                         <p><strong>Geo:</strong> <?= htmlspecialchars($row['geolocation']) ?></p>
                         <?php if (!empty($row['approval_letter'])): ?>
                             <p><strong>Approval Letter:</strong>
-                                <a href="../../modules/module2/Html_files/<?= htmlspecialchars($row['approval_letter']) ?>" target="_blank">View</a>
+                                <a href="../module2/Html_files/<?= htmlspecialchars($row['approval_letter']) ?>" target="_blank">View</a>
                             </p>
+                            
+                            <?php
+                                $qrPath = "../module2/qr_images/event_" . $row['event_id'] . ".png";
+                                if (file_exists($qrPath)): ?>
+                                    <div class="qr-preview">
+                                        <img src="<?= $qrPath ?>" alt="QR Code" width="160">
+                                    </div>
+                            <?php endif; ?>
                         <?php endif; ?>
+
+                        
                     </div>
                 <?php endwhile; ?>
             <?php else: ?>

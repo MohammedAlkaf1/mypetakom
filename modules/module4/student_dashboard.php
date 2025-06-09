@@ -135,8 +135,8 @@ $module_nav_items = [
     'profile.php' => 'Profile',
     'events.php' => 'Events',
     'attendance.php' => 'Attendance',
-    'merit_management.php' => 'Merit Management',
-    'apply_membership.php' => 'Apply Membership'
+     'merit_management.php' => 'Merit Management',
+     'apply_membership.php' => 'Apply Membership'
 ];
 $current_module = '';
 ?>

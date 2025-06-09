@@ -41,11 +41,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = trim($_POST['name']);
     $email = trim($_POST['email']);
     $role = trim($_POST['role']);
-    $password = password_hash("123456", PASSWORD_DEFAULT); // Default password
+    $default_password = "123456"; // Default plain password
+    $hashed_password = password_hash($default_password, PASSWORD_DEFAULT); // Securely hashed
 
     // Insert into user table
     $stmt = $conn->prepare("INSERT INTO user (name, email, role, password) VALUES (?, ?, ?, ?)");
-    $stmt->bind_param("ssss", $name, $email, $role, $password);
+    $stmt->bind_param("ssss", $name, $email, $role, $hashed_password);
+
 
     if ($stmt->execute()) {
         $user_id = $stmt->insert_id;

@@ -10,10 +10,11 @@ if (!isset($data['event_id']) || !isset($data['image_data'])) {
 $event_id = intval($data['event_id']);
 $imageData = $data['image_data'];
 
-// Clean base64 header
+// Strip base64 header
 $base64 = preg_replace('#^data:image/\w+;base64,#i', '', $imageData);
 $decoded = base64_decode($base64);
 
+// Save to qr_images/
 $savePath = "../qr_images/event_{$event_id}.png";
 file_put_contents($savePath, $decoded);
 

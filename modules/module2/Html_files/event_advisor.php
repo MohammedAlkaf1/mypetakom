@@ -92,6 +92,7 @@ $result = $conn->query($sql);
                             <a href="<?= $row['approval_letter'] ?>" target="_blank">View</a>
                         </p>
 
+                        
                         <?php
                         $qrPath = "../qr_images/event_" . $row['event_id'] . ".png";
                         if (file_exists($qrPath)): ?>
@@ -99,6 +100,7 @@ $result = $conn->query($sql);
                                 <img src="<?= $qrPath ?>" alt="QR Code" width="160">
                             </div>
                         <?php endif; ?>
+
 
 
                         <div class="event-actions">

@@ -1,5 +1,4 @@
 <?php
-
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
@@ -15,48 +14,109 @@ $module_nav_items = [
     'events.php' => 'Events',
     'attendance.php' => 'Attendance',
     'merit_management.php' => 'Merit Management',
-    'apply_membership.php' => 'Apply Membership'
 ];
 $current_module = 'apply_membership.php';
 
 $message = '';
 
-$user_id = $_SESSION['user_id'];
- 
+$user_id = $_SESSION['user_id'] ?? null;
+
+// Fetch email and name from user table
+$user_sql = $conn->prepare("SELECT name, email FROM User WHERE user_id = ?");
+$user_sql->bind_param("i", $user_id);
+$user_sql->execute();
+$user_result = $user_sql->get_result();
+$user_data = $user_result->fetch_assoc();
+
+$_SESSION['name'] = $user_data['name'];
+$_SESSION['email'] = $user_data['email'];
+
+// Fetch student ID from Student table
+$stud_sql = $conn->prepare("SELECT student_matric_id FROM Student WHERE user_id = ?");
+$stud_sql->bind_param("i", $user_id);
+$stud_sql->execute();
+$stud_result = $stud_sql->get_result();
+$stud_data = $stud_result->fetch_assoc();
+
+$_SESSION['student_id'] = $stud_data['student_matric_id'] ?? 'N/A';
+
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = $_POST['name'];
-$studentId = $_POST['student_id'];
-$email = $_POST['email'];
-$uploadDir = '../../uploads/';
-$fileName = basename($_FILES['student_card']['name']);
-$targetFile = $uploadDir . time() . '_' . $fileName;
+    $studentId = $_POST['student_id'];
+    $email = $_POST['email'];
+    $uploadDir = '../../uploads/';
+    $fileName = basename($_FILES['student_card']['name']);
+    $targetFile = $uploadDir . time() . '_' . $fileName;
 
-// ✅ Check if this user already applied and still pending
-$check = $conn->prepare("SELECT * FROM Membership WHERE user_id = ? AND status = 'pending'");
-$check->bind_param("i", $user_id);
-$check->execute();
-$result = $check->get_result();
+    // ✅ Step 1: Check if membership is already approved
+    $checkApproved = $conn->prepare("SELECT status FROM Membership WHERE user_id = ?");
+    $checkApproved->bind_param("i", $user_id);
+    $checkApproved->execute();
+    $resultApproved = $checkApproved->get_result();
 
-if ($result->num_rows > 0) {
-    $message = "You have already submitted a membership application. Please wait for approval.";
-} else {
-    // ✅ Proceed to upload file and insert new record
-    if (move_uploaded_file($_FILES['student_card']['tmp_name'], $targetFile)) {
-        $stmt = $conn->prepare("INSERT INTO Membership (user_id, status, student_matric_card) VALUES (?, 'pending', ?)");
-        $stmt->bind_param("is", $user_id, $targetFile);
-
-        if ($stmt->execute()) {
-            $message = "Application submitted successfully!";
-        } else {
-            $message = "Error saving to database.";
+    if ($resultApproved->num_rows > 0) {
+        $row = $resultApproved->fetch_assoc();
+        if ($row && $row['status'] === 'Approved') {  // Ensure $row is not null
+            // Redirect to student dashboard if already approved
+            header("Location: modules/module4/student_dashboard.php");
+            exit();
         }
+    }
+
+    // ✅ Check if this user already applied and still pending
+    $check = $conn->prepare("SELECT * FROM Membership WHERE user_id = ? AND status = 'pending'");
+    $check->bind_param("i", $user_id);
+    $check->execute();
+    $result = $check->get_result();
+
+    if ($result->num_rows > 0) {
+        $message = "You have already submitted a membership application. Please wait for approval.";
     } else {
-        $message = "File upload failed.";
+        // ✅ Proceed to upload file and insert new record
+        if (move_uploaded_file($_FILES['student_card']['tmp_name'], $targetFile)) {
+            $stmt = $conn->prepare("INSERT INTO Membership (user_id, status, student_matric_card) VALUES (?, 'pending', ?)");
+            $stmt->bind_param("is", $user_id, $targetFile);
+
+            if ($stmt->execute()) {
+                $message = "Application submitted successfully!";
+            } else {
+                $message = "Error saving to database.";
+            }
+        } else {
+            $message = "File upload failed.";
+        }
     }
 }
+
+// Fetch student info from DB
+$studentInfoStmt = $conn->prepare("SELECT u.name, s.student_matric_id, u.email 
+                                   FROM user u 
+                                   JOIN student s ON u.user_id = s.user_id 
+                                   WHERE u.user_id = ?");
+$studentInfoStmt->bind_param("i", $user_id);
+$studentInfoStmt->execute();
+$studentResult = $studentInfoStmt->get_result();
+
+$student_name = '';
+$student_id = '';
+$student_email = '';
+
+$stmt = $conn->prepare("SELECT u.name, u.email, s.student_matric_id 
+                        FROM user u 
+                        JOIN student s ON u.user_id = s.user_id 
+                        WHERE u.user_id = ?");
+$stmt->bind_param("i", $user_id);
+$stmt->execute();
+$result = $stmt->get_result();
+
+if ($result->num_rows > 0) {
+    $row = $result->fetch_assoc();
+    $student_name = $row['name'];
+    $student_email = $row['email'];
+    $student_id = $row['student_matric_id'];
 }
 ?>
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -131,7 +191,7 @@ if ($result->num_rows > 0) {
 <body>
         <?php include_once '../../shared/components/header.php'; ?>
  <div class="container">
-        <?php include_once '../../shared/components/sidebar.php'; ?>
+      
 
 <div class="main-content">
     <h2>Apply for Petakom Membership</h2>
@@ -140,14 +200,13 @@ if ($result->num_rows > 0) {
     <?php endif; ?>
 <div class="form-card">
         <form method="POST" enctype="multipart/form-data">
-            <label>Full Name:</label><br>
-            <input type="text" name="name" required style="width: 100%;"><br><br>
+    <p><strong style="color: black;">Full Name:</strong> <?php echo htmlspecialchars($_SESSION['name'] ?? 'N/A'); ?></p>
+    <p><strong style="color: black;">Student ID:</strong> <?php echo htmlspecialchars($_SESSION['student_id'] ?? 'N/A'); ?></p>
+    <p><strong style="color: black;">Email:</strong> <?php echo htmlspecialchars($_SESSION['email'] ?? 'N/A'); ?></p>
 
-            <label>Student ID:</label><br>
-            <input type="text" name="student_id" required style="width: 100%;"><br><br>
-
-            <label>Email:</label><br>
-            <input type="email" name="email" required style="width: 100%;"><br><br>
+    <input type="hidden" name="name" value="<?php echo htmlspecialchars($_SESSION['name']); ?>">
+    <input type="hidden" name="student_id" value="<?php echo htmlspecialchars($_SESSION['student_id']); ?>">
+    <input type="hidden" name="email" value="<?php echo htmlspecialchars($_SESSION['email']); ?>">
 
             <label>Upload Student Card:</label><br>
             <input type="file" name="student_card" accept="image/*,application/pdf" required><br><br>

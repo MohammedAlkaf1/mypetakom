@@ -44,10 +44,15 @@ $result = $conn->query($sql);
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>View Users - MyPetakom</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="../../shared/css/shared-layout.css">
     <link rel="stylesheet" href="../../shared/css/components.css">
+    <script src="../../shared/js/prevent-back-button.js"></script>
+
     <style>
         .main-content {
             margin-left: 260px;

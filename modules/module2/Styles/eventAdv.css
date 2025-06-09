@@ -64,12 +64,12 @@
     right: 20px;
     width: 160px;
 }
-
 .qr-preview img {
     width: 100%;
     border-radius: 6px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
+
 
 /* Action Buttons */
 .event-actions {

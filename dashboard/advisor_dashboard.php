@@ -46,6 +46,10 @@ $current_module = '';
     <link rel="stylesheet" href="advisor_dashboard.css?v=<?= time() ?>">
     <script src="../shared/js/prevent-back-button.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Chart.js already included -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
     
 
 </head>
@@ -103,6 +107,9 @@ $current_module = '';
                 </div>
             </div>
 
+            <button id="downloadPDF" class="report-download-btn">📄 Download Report as PDF</button>
+
+
 
 
 
@@ -155,6 +162,42 @@ new Chart(levelCtx, {
     }
 });
 </script>
+<script>
+    document.getElementById('downloadPDF').addEventListener('click', async function () {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        let y = 10;
+
+        // Add title
+        doc.setFontSize(18);
+        doc.text('Advisor Dashboard Report', 10, y);
+        y += 15;
+
+        // Add summary text
+        doc.setFontSize(12);
+        doc.text("Total Events Created: <?= $total_events ?>", 10, y);
+        y += 10;
+        doc.text("Pending Merit Applications: <?= $pending_merits ?>", 10, y);
+        y += 10;
+        doc.text("Upcoming Events: <?= $upcoming_events ?>", 10, y);
+        y += 20;
+
+        // Capture Status Chart
+        const statusCanvas = document.getElementById('statusChart');
+        const statusImg = await html2canvas(statusCanvas).then(canvas => canvas.toDataURL("image/png"));
+        doc.addImage(statusImg, 'PNG', 10, y, 90, 70);
+        y += 80;
+
+        // Capture Level Chart
+        const levelCanvas = document.getElementById('levelChart');
+        const levelImg = await html2canvas(levelCanvas).then(canvas => canvas.toDataURL("image/png"));
+        doc.addImage(levelImg, 'PNG', 110, y - 80, 90, 70); // beside the first chart
+
+        // Save file
+        doc.save('advisor_dashboard_report.pdf');
+    });
+</script>
+
 
 </body>
 </html>

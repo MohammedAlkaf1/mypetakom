@@ -25,7 +25,6 @@ $module_nav_items = [
     'events.php' => 'Events',
     'attendance.php' => 'Attendance',
     'merit_management.php' => 'Merit Management',
-    'apply_membership.php' => 'Apply Membership'
 ];
 $current_module = 'attendance.php';
 
@@ -182,7 +181,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Generate QR codes for active events
     rows.forEach(event => {
         if (event.attendance_status && event.attendance_status.toLowerCase() === 'active') {
-            const qrUrl = `http://192.168.8.129/mypetakom/modules/module3/checkin.php?event_id=${event.event_id}`;
+            const qrUrl = `http://10.65.87.199/mypetakom/modules/module3/checkin.php?event_id=${event.event_id}`;
             new QRCode(document.getElementById('qrcode-' + event.event_id), {
                 text: qrUrl,
                 width: 100,

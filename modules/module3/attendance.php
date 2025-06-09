@@ -114,7 +114,7 @@ $events = $conn->query($query);
                             <td>
                                 <?php
                                 if (!empty($row['attendance_status']) && strtolower($row['attendance_status']) === 'active') {
-                                    $qr_url = "http://192.168.8.129/mypetakom/modules/module3/checkin.php?event_id=" . $row['event_id'];
+                                    $qr_url = "http://10.65.87.199/mypetakom/modules/module3/checkin.php?event_id=" . $row['event_id'];
                                     // Save for JS generation later
                                     $qr_codes[$row['event_id']] = $qr_url;
                                     ?>
