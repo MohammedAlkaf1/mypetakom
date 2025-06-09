@@ -1,10 +1,10 @@
 <?php
 session_start();
-require_once 'sql/db.php';
+require_once 'sql/db.php'; // Include your database connection
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $email = trim($_POST['email']);
-    $password = $_POST['password'];
+    $password = $_POST['password'];  // Plain password entered by the user
     $selectedRole = $_POST['role'];
 
     if (empty($email) || empty($password) || empty($selectedRole)) {
@@ -23,9 +23,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if ($result->num_rows === 1) {
         $user = $result->fetch_assoc();
 
+        // Compare hashed password with entered password using password_verify
         if (
             $user['role'] === $selectedRole &&
-            $password === $user['password']
+            password_verify($password, $user['password'])  // Hash comparison
         ) {
             $_SESSION['user_id'] = $user['user_id'];
             $_SESSION['name'] = $user['name'];
@@ -41,31 +42,29 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     exit();
 
                 case 'student':
-    // Check if student has a membership record
-   $membership_sql = "SELECT status FROM membership WHERE user_id = ?";
-   $membership_stmt = $conn->prepare($membership_sql);
-   $membership_stmt->bind_param("i", $user['user_id']);
+                    // Check if student has a membership record
+                    $membership_sql = "SELECT status FROM membership WHERE user_id = ?";
+                    $membership_stmt = $conn->prepare($membership_sql);
+                    $membership_stmt->bind_param("i", $user['user_id']);
+                    $membership_stmt->execute();
+                    $membership_result = $membership_stmt->get_result();
 
-    $membership_stmt->execute();
-    $membership_result = $membership_stmt->get_result();
+                    if ($membership_result->num_rows > 0) {
+                        $membership = $membership_result->fetch_assoc();
 
-    if ($membership_result->num_rows > 0) {
-        $membership = $membership_result->fetch_assoc();
-
-            if (strcasecmp($membership['status'], 'approved') === 0) {
-        // ✅ Redirect to student dashboard
-        header("Location: modules/module4/student_dashboard.php");
-        exit();
-    } else {
-        $_SESSION['login_error'] = "Your membership is pending approval.";
-        header("Location: modules/module4/apply_membership.php");
-        exit();
-    }
-} else {
-    $_SESSION['login_error'] = "No membership found. Please apply.";
-    header("Location: modules/module4/apply_membership.php");
-    exit();
-}
+                        if (strcasecmp($membership['status'], 'approved') === 0) {
+                            header("Location: modules/module4/student_dashboard.php");
+                            exit();
+                        } else {
+                            $_SESSION['login_error'] = "Your membership is pending approval.";
+                            header("Location: modules/module4/apply_membership.php");
+                            exit();
+                        }
+                    } else {
+                        $_SESSION['login_error'] = "No membership found. Please apply.";
+                        header("Location: modules/module4/apply_membership.php");
+                        exit();
+                    }
 
                 default:
                     $_SESSION['login_error'] = "Unauthorized role.";
