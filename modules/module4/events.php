@@ -79,7 +79,7 @@ $current_module = 'events.php';
                         <p><strong>Geo:</strong> <?= htmlspecialchars($row['geolocation']) ?></p>
                         <?php if (!empty($row['approval_letter'])): ?>
                             <p><strong>Approval Letter:</strong>
-                                <a href="../../modules/module2/Html_files/<?= htmlspecialchars($row['approval_letter']) ?>" target="_blank">View</a>
+                                <a href="../module2/Html_files/<?= htmlspecialchars($row['approval_letter']) ?>" target="_blank">View</a>
                             </p>
                         <?php endif; ?>
                     </div>
