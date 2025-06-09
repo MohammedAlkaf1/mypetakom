@@ -9,7 +9,7 @@ header("Expires: 0");
 
 // Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
-    header("Location: ../../login.php");
+    header("Location: ../../../login.php");
     exit();
 }
 
@@ -81,7 +81,17 @@ $current_module = 'events.php';
                             <p><strong>Approval Letter:</strong>
                                 <a href="../module2/Html_files/<?= htmlspecialchars($row['approval_letter']) ?>" target="_blank">View</a>
                             </p>
+                            
+                            <?php
+                                $qrPath = "../module2/qr_images/event_" . $row['event_id'] . ".png";
+                                if (file_exists($qrPath)): ?>
+                                    <div class="qr-preview">
+                                        <img src="<?= $qrPath ?>" alt="QR Code" width="160">
+                                    </div>
+                            <?php endif; ?>
                         <?php endif; ?>
+
+                        
                     </div>
                 <?php endwhile; ?>
             <?php else: ?>
