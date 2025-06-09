@@ -13,7 +13,8 @@ $logout_url = "../../logout.php";
 $dashboard_url = "../../dashboard/advisor_dashboard.php";
 $module_nav_items = [
     '../../modules/module2/Html_files/event_advisor.php' => 'Events',
-    '../module3/attendance.php' => 'Attendance Activity',
+    'attendance.php' => 'Attendance Activity',
+    '../module4/approve_merit.php' => 'Approve Merit Claims'
 ];
 $current_module = 'attendance.php';
 

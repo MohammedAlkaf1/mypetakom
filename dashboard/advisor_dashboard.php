@@ -31,6 +31,7 @@ $module_nav_items = [
     
     '../modules/module2/Html_files/event_advisor.php' => 'Events',
     '../modules/module3/attendance.php' => 'Attendance Activity',
+    '../modules/module4/approve_merit.php' => 'Approve Merit Claims',
 ];
 $current_module = '';
 ?>
