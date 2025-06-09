@@ -27,7 +27,6 @@ $module_nav_items = [
     'events.php' => 'Events',
     'attendance.php' => 'Attendance',
      'merit_management.php' => 'Merit Management',
-     'apply_membership.php' => 'Apply Membership'
 ];
 $current_module = '';
 

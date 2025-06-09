@@ -72,10 +72,6 @@ $sql3 = "SELECT COUNT(*) as total_staff FROM user WHERE role = 'staff'";
 $result3 = $conn->query($sql3);
 $total_staff = $result3->fetch_assoc()['total_staff'];
 
-// Get total events
-$sql4 = "SELECT COUNT(*) as total_events FROM event";
-$result4 = $conn->query($sql4);
-$total_events = $result4->fetch_assoc()['total_events'];
 
 // Get pending memberships
 $sql5 = "SELECT COUNT(*) as pending_memberships FROM membership WHERE status = 'pending'";
@@ -135,14 +131,19 @@ if (isset($_POST['reject'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>Admin Dashboard - MyPetakom</title>
     <link rel="stylesheet" href="admin_dashboard.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../shared/css/shared-layout.css">
     <link rel="stylesheet" href="../shared/css/components.css">
 
+    <script src="../shared/js/prevent-back-button.js"></script>
+
 </head>
-<body data-login-url="../../login.php">
+<body data-login-url="../login.php">
     <?php include_once '../shared/components/header.php'; ?>
 
     <div class="container">
@@ -174,11 +175,6 @@ if (isset($_POST['reject'])) {
             <div class="stat-box orange">
                 <h3><?php echo $total_staff; ?></h3>
                 <p><i class="bi bi-person-badge"></i> Staff</p>
-            </div>
-            
-            <div class="stat-box red">
-                <h3><?php echo $total_events; ?></h3>
-                <p><i class="bi bi-calendar-event"></i> Total Events</p>
             </div>
             
             <div class="stat-box blue">
