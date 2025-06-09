@@ -36,6 +36,7 @@ $result = $stmt->get_result();
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>MyPetakom - Manage Events</title>
@@ -60,12 +61,24 @@ $result = $stmt->get_result();
                 <div id="toast-msg" class="toast-alert success">
                     <?php
                     switch ($_GET['msg']) {
-                        case 'deleted': echo "Event deleted successfully."; break;
-                        case 'updated': echo "Event " . htmlspecialchars($_GET['title']) . " updated successfully."; break;
-                        case 'qr_success': echo "QR Code generated successfully."; break;
-                        case 'merit_applied': echo "Merit application submitted."; break;
-                        case 'merit_updated': echo "Merit application updated."; break;
-                        case 'merit_deleted': echo "Merit application deleted."; break;
+                        case 'deleted':
+                            echo "Event deleted successfully.";
+                            break;
+                        case 'updated':
+                            echo "Event " . htmlspecialchars($_GET['title']) . " updated successfully.";
+                            break;
+                        case 'qr_success':
+                            echo "QR Code generated successfully.";
+                            break;
+                        case 'merit_applied':
+                            echo "Merit application submitted.";
+                            break;
+                        case 'merit_updated':
+                            echo "Merit application updated.";
+                            break;
+                        case 'merit_deleted':
+                            echo "Merit application deleted.";
+                            break;
                     }
                     ?>
                 </div>
@@ -113,7 +126,7 @@ $result = $stmt->get_result();
                                 <a href="update_merit.php?merit_id=<?= $mid ?>&event_id=<?= $eid ?>"><button>Update Merit</button></a>
                                 <a href="delete_merit.php?merit_id=<?= $mid ?>&event_id=<?= $eid ?>" onclick="return confirm('Delete merit application?');"><button>Delete Merit</button></a>
                             <?php else: ?>
-                                <a href="apply_merit.php?event_id=<?= $row['event_id']?>"><button>Apply Merit</button></a>
+                                <a href="apply_merit.php?event_id=<?= $row['event_id'] ?>"><button>Apply Merit</button></a>
                             <?php endif; ?>
                         </div>
                     </div>
@@ -124,6 +137,7 @@ $result = $stmt->get_result();
         </main>
     </div>
 </body>
+
 </html>
 
 <?php
