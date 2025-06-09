@@ -104,7 +104,7 @@ $row = $result->fetch_assoc();
 
                 <label for="event_status">Status</label>
                 <select id="event_status" name="event_status" required>
-                    <option value="Upcoming" <?= $row['event_status']=='Upcoming'?'selected':'' ?>>Pending</option>
+                    <option value="Upcoming" <?= $row['event_status']=='Upcoming'?'selected':'' ?>>Upcoming</option>
                     <option value="Postpond" <?= $row['event_status']=='Postpond'?'selected':'' ?>>Postpond</option>
                     <option value="Cancelled" <?= $row['event_status']=='Cancelled'?'selected':'' ?>>Cancelled</option>
                 </select>
