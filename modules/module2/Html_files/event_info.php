@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once '../../sql/db.php';
+require_once '../../../sql/db.php';
 
 // Validate event ID
 if (!isset($_GET['event_id'])) {
