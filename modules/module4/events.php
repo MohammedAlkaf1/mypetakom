@@ -36,6 +36,7 @@ $current_module = 'events.php';
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -44,11 +45,13 @@ $current_module = 'events.php';
     <meta http-equiv="Expires" content="0">
     <link rel="stylesheet" href="../../shared/css/shared-layout.css">
     <link rel="stylesheet" href="../../shared/css/components.css">
+    <link rel="stylesheet" href="../module2/Styles/eventAdv.css">
+
     <title>Evenets Test Page</title>
 
-    <script src="../../shared/js/prevent-back-button.js"></script>
 
 </head>
+
 <body data-login-url="../../login.php">
     <?php include_once '../../shared/components/header.php'; ?>
 
@@ -56,10 +59,39 @@ $current_module = 'events.php';
         <?php include_once '../../shared/components/sidebar.php'; ?>
 
         <!-- Main Content -->
+        <!-- Main Content -->
         <div class="main-content">
             <h1>Events</h1>
+
+            <?php
+            // Fetch all events
+            $sql = "SELECT * FROM event ORDER BY event_start_date DESC";
+            $result = $conn->query($sql);
+            ?>
+
+            <?php if ($result->num_rows > 0): ?>
+                <?php while ($row = $result->fetch_assoc()): ?>
+                    <div class="event-card">
+                        <h3>Event Name: <?= htmlspecialchars($row['title']) ?></h3>
+                        <p><strong>Location:</strong> <?= htmlspecialchars($row['location']) ?></p>
+                        <p><strong>Date:</strong> <?= htmlspecialchars($row['event_start_date']) ?></p>
+                        <p><strong>Status:</strong> <?= htmlspecialchars($row['event_status']) ?></p>
+                        <p><strong>Description:</strong><br><?= nl2br(htmlspecialchars($row['description'])) ?></p>
+                        <p><strong>Geo:</strong> <?= htmlspecialchars($row['geolocation']) ?></p>
+                        <?php if (!empty($row['approval_letter'])): ?>
+                            <p><strong>Approval Letter:</strong>
+                                <a href="../../modules/module2/Html_files/<?= htmlspecialchars($row['approval_letter']) ?>" target="_blank">View</a>
+                            </p>
+                        <?php endif; ?>
+                    </div>
+                <?php endwhile; ?>
+            <?php else: ?>
+                <p>No events found.</p>
+            <?php endif; ?>
         </div>
+
     </div>
 
 </body>
+
 </html>
