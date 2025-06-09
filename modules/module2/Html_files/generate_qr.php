@@ -22,7 +22,7 @@ $event_id = intval($_GET['event_id']);
     <script>
         // ✅ Use your computer's IP here (replace this with your actual local IP)
         const eventId = <?= json_encode($event_id) ?>;
-        const qrUrl = `http://10.65.85.186/mypetakom/modules/module2/event_info.php?event_id=${eventId}`;
+        const qrUrl = `http://10.65.87.199/mypetakom/modules/module2/event_info.php?event_id=${eventId}`;
 
         // Generate QR inside hidden canvas
         const canvas = document.getElementById('qr-canvas');
