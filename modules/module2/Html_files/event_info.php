@@ -8,6 +8,7 @@ if (!isset($_GET['event_id'])) {
     exit();
 }
 
+
 $event_id = intval($_GET['event_id']);
 
 // Fetch event data

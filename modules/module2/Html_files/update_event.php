@@ -71,6 +71,7 @@ $row = $result->fetch_assoc();
     <link rel="stylesheet" href="../Styles/create_event.css">
     <link rel="stylesheet" href="../../../shared/css/shared-layout.css">
     <link rel="stylesheet" href="../../../shared/css/components.css">
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCskLDQQG9Bj1waQm0a2KOuijdshmD5IuA"></script>
     
     <style>
         .main-content h2 {
@@ -108,13 +109,46 @@ $row = $result->fetch_assoc();
                     <option value="rejected" <?= $row['event_status']=='rejected'?'selected':'' ?>>Rejected</option>
                 </select>
 
-                <label for="geolocation">Geolocation</label>
-                <input type="text" id="geolocation" name="geolocation" value="<?= htmlspecialchars($row['geolocation']) ?>" required>
+                <label for="geo">Geolocation</label>
+                    <div style="display: flex;">
+                        <input type="text" id="geo" name="geolocation" required readonly>
+                        <button type="button" onclick="getLocation()" style="margin-left: 5px;">📍</button>
+                    </div>
+                <div id="map" style="width: 100%; height: 250px; margin-top: 10px;"></div>
 
                 <button type="submit" class="submit-btn">Save Changes</button>
             </form>
         </main>
     </div>
+    <script>
+function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+            const lat = position.coords.latitude.toFixed(6);
+            const lng = position.coords.longitude.toFixed(6);
+            document.getElementById("geo").value = `${lat},${lng}`;
+            showMap(lat, lng);
+        }, function(error) {
+            alert("Error getting location: " + error.message);
+        });
+    } else {
+        alert("Geolocation not supported by this browser.");
+    }
+}
+
+function showMap(lat, lng) {
+    const map = new google.maps.Map(document.getElementById("map"), {
+        center: { lat: parseFloat(lat), lng: parseFloat(lng) },
+        zoom: 15,
+    });
+    new google.maps.Marker({
+        position: { lat: parseFloat(lat), lng: parseFloat(lng) },
+        map: map,
+        title: "Your Location",
+    });
+}
+</script>
+
 </body>
 </html>
 

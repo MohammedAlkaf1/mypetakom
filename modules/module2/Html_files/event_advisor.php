@@ -1,6 +1,4 @@
-
 <?php
-
 session_start();
 
 // Prevent back button access
@@ -14,11 +12,11 @@ if (!isset($_SESSION['user_id'])) {
     header("Location: ../login.php");
     exit();
 }
+
 $page_title = "MyPetakom - Manage events";
 $logout_url = "../../../logout.php";
 $dashboard_url = "../../../dashboard/advisor_dashboard.php";
 $module_nav_items = [
-    
     './event_advisor.php' => 'Events',
     '../../module3/attendance.php' => 'Attendance Activity',
 ];
@@ -27,9 +25,13 @@ $current_module = '';
 <?php
 include 'connection.php';
 
-// Fetch all events
-$sql = "SELECT * FROM event ORDER BY event_start_date DESC";
-$result = $conn->query($sql);
+// Only show events added by this advisor
+$user_id = $_SESSION['user_id'];
+$sql = "SELECT * FROM event WHERE added_by = ? ORDER BY event_start_date DESC";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $user_id);
+$stmt->execute();
+$result = $stmt->get_result();
 ?>
 
 <!DOCTYPE html>
@@ -40,11 +42,9 @@ $result = $conn->query($sql);
     <link rel="stylesheet" href="../Styles/eventAdv.css">
     <link rel="stylesheet" href="../../../shared/css/shared-layout.css">
     <link rel="stylesheet" href="../../../shared/css/components.css">
-    
 </head>
 
 <body>
-
     <?php include '../../../shared/components/header.php'; ?>
 
     <div class="container">
@@ -57,19 +57,18 @@ $result = $conn->query($sql);
             </div>
 
             <?php if (isset($_GET['msg'])): ?>
-                <?php if ($_GET['msg'] === 'deleted'): ?>
-                    <div id="toast-msg" class="toast-alert success">Event deleted successfully.</div>
-                <?php elseif ($_GET['msg'] === 'updated'): ?>
-                    <div id="toast-msg" class="toast-alert success">Event <?= htmlspecialchars($_GET['title']) ?> updated successfully.</div>
-                <?php elseif ($_GET['msg'] === 'qr_success'): ?>
-                    <div id="toast-msg" class="toast-alert success"> QR Code generated successfully.</div>
-                <?php elseif ($_GET['msg'] === 'merit_applied'): ?>
-                    <div id="toast-msg" class="toast-alert success"> Merit application submitted.</div>
-                <?php elseif ($_GET['msg'] === 'merit_updated'): ?>
-                    <div id="toast-msg" class="toast-alert success"> Merit application updated.</div>
-                <?php elseif ($_GET['msg'] === 'merit_deleted'): ?>
-                    <div id="toast-msg" class="toast-alert success"> Merit application deleted.</div>
-                <?php endif; ?>
+                <div id="toast-msg" class="toast-alert success">
+                    <?php
+                    switch ($_GET['msg']) {
+                        case 'deleted': echo "Event deleted successfully."; break;
+                        case 'updated': echo "Event " . htmlspecialchars($_GET['title']) . " updated successfully."; break;
+                        case 'qr_success': echo "QR Code generated successfully."; break;
+                        case 'merit_applied': echo "Merit application submitted."; break;
+                        case 'merit_updated': echo "Merit application updated."; break;
+                        case 'merit_deleted': echo "Merit application deleted."; break;
+                    }
+                    ?>
+                </div>
                 <script>
                     setTimeout(() => {
                         const toast = document.getElementById('toast-msg');
@@ -99,7 +98,6 @@ $result = $conn->query($sql);
                             </div>
                         <?php endif; ?>
 
-
                         <div class="event-actions">
                             <a href="update_event.php?event_id=<?= $row['event_id'] ?>"><button>Update</button></a>
                             <a href="delete_event.php?event_id=<?= $row['event_id'] ?>" onclick="return confirm('Are you sure?');"><button>Delete</button></a>
@@ -128,4 +126,6 @@ $result = $conn->query($sql);
 </body>
 </html>
 
-<?php $conn->close(); ?>
+<?php
+$conn->close();
+?>
