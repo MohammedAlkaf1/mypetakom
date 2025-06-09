@@ -1,44 +1,48 @@
 <?php
-require_once './connection.php';
-require_once '../vendor/autoload.php';
-
-use Endroid\QrCode\QrCode;
-use Endroid\QrCode\Writer\PngWriter;
-
-// 1. Get Event ID from URL
-$event_id = $_GET['event_id'] ?? null;
-if (!$event_id) {
-    die("Event ID is required.");
+session_start();
+if (!isset($_GET['event_id'])) {
+    die("Missing event_id.");
 }
+$event_id = intval($_GET['event_id']);
+?>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Generating QR Code...</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+<canvas id="qr-canvas" style="display:none;"></canvas>
 
-// 2. Define URL for QR code (you can change to localhost or real domain)
-$codeUrl = "http://10.65.86.209/Project_prototypes/Html_files/student_attendance.php?event_id=$event_id";
+<script>
+const eventId = <?= json_encode($event_id) ?>;
+const qrUrl = `http://localhost/mypetakom/modules/module2/event_info.php?event_id=${eventId}`;
 
+// Generate QR on hidden canvas
+const canvas = document.getElementById('qr-canvas');
+const qr = new QRCode(canvas, {
+    text: qrUrl,
+    width: 200,
+    height: 200
+});
 
-// 3. Generate QR Code
-$qr = QrCode::create($codeUrl)
-    ->setSize(300)
-    ->setMargin(10);
-$writer = new PngWriter();
-$result = $writer->write($qr);
+setTimeout(() => {
+    const imgData = canvas.querySelector('img')?.src;
 
-// 4. Save image locally
-$qrDir = "../qr_images/";
-if (!is_dir($qrDir)) {
-    mkdir($qrDir, 0777, true);
-}
-$imagePath = "{$qrDir}event_{$event_id}.png";
-file_put_contents($imagePath, $result->getString());
+    if (!imgData) {
+        alert("Failed to generate QR");
+        return;
+    }
 
-// 5. Insert or update in database
-$stmt = $conn->prepare("INSERT INTO qrcode (code, code_status, qr_image) VALUES (?, 'active', ?) ON DUPLICATE KEY UPDATE qr_image = VALUES(qr_image)");
-$stmt->bind_param("ss", $codeUrl, $imagePath);
-$stmt->execute();
-$stmt->close();
-$conn->close();
-
-// 6. Redirect to page that displays QR
-header("Location: show_qr.php?event_id=$event_id");
-exit;
-
-
+    // Send to PHP to save
+    fetch('save_qr.php', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ event_id: eventId, image_data: imgData })
+    })
+    .then(res => res.text())
+    .then(() => window.location.href = "event_advisor.php?msg=qr_success");
+}, 1000);
+</script>
+</body>
+</html>

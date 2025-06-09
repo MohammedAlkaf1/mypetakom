@@ -92,12 +92,13 @@ $result = $conn->query($sql);
                         </p>
 
                         <?php
-                        $qrPath = "../qr_images/event_" . $row['event_id'] . ".svg";
+                        $qrPath = "../qr_images/event_" . $row['event_id'] . ".png";
                         if (file_exists($qrPath)): ?>
                             <div class="qr-preview">
                                 <img src="<?= $qrPath ?>" alt="QR Code" width="160">
                             </div>
                         <?php endif; ?>
+
 
                         <div class="event-actions">
                             <a href="update_event.php?event_id=<?= $row['event_id'] ?>"><button>Update</button></a>

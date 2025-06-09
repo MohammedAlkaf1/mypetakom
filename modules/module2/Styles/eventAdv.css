@@ -1,25 +1,24 @@
 
 /* Layout */
-body, html {
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
-}
+
 
 .container {
-    margin-top: 50px;
+    padding-top: 0px;
     display: flex; /* Flex to align sidebar + content */
     min-height: calc(100vh); /* minus header height */
+    
 }
 
 .main-content {
-    height: (100% - 50px);
-    margin-left: 230px;
+    margin-top: 0; /* don't use big margin here */
+    margin-left: 250px; /* same as sidebar */
     flex: 1;
     padding: 2rem;
+    padding-top: 0px;
     background-color: #f9f9f9;
-    width: (100% - 200px);
+    min-height: calc(100vh - 60px); /* match header height */
 }
+
 
 /* Header */
 .event-header {
