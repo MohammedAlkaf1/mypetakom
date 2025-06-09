@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once '../../sql/db.php';
+require_once '../../../sql/db.php';
 
 // Validate event ID
 if (!isset($_GET['event_id'])) {
@@ -24,11 +24,16 @@ if (!$event) {
 }
 
 // Fetch committee members
-$committee_stmt = $conn->prepare("SELECT u.name, c.role_name FROM eventcommittee ec JOIN user u ON ec.user_id = u.user_id JOIN committee_role c ON ec.cr_id = c.cr_id WHERE ec.event_id = ?");
+$committee_stmt = $conn->prepare("SELECT u.user_id, u.name, u.email, c.cr_desc AS role_name 
+                                  FROM eventcommittee ec 
+                                  JOIN user u ON ec.user_id = u.user_id 
+                                  JOIN committee_role c ON ec.cr_id = c.cr_id 
+                                  WHERE ec.event_id = ?");
 $committee_stmt->bind_param("i", $event_id);
 $committee_stmt->execute();
 $committee_result = $committee_stmt->get_result();
 $committees = $committee_result->fetch_all(MYSQLI_ASSOC);
+
 
 // Fetch merit application
 $merit_stmt = $conn->prepare("SELECT status FROM merit_application WHERE event_id = ?");
@@ -56,9 +61,9 @@ $current_module = '';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= htmlspecialchars($page_title) ?></title>
-    <link rel="stylesheet" href="../../shared/css/shared-layout.css">
-    <link rel="stylesheet" href="../../shared/css/components.css">
-    <script src="../../shared/js/prevent-back-button.js"></script>
+    <link rel="stylesheet" href="../../../shared/css/shared-layout.css">
+    <link rel="stylesheet" href="../../../shared/css/components.css">
+    <script src="../../../shared/js/prevent-back-button.js"></script>
     <style>
         .event-box {
             background: white;
@@ -81,11 +86,11 @@ $current_module = '';
 </head>
 <body>
     <!-- Header Include -->
-    <?php include_once '../../shared/components/header.php'; ?>
+    <?php include_once '../../../shared/components/header.php'; ?>
 
     <div class="container">
         <!-- Sidebar Include -->
-        <?php include_once '../../shared/components/sidebar.php'; ?>
+        <?php include_once '../../../shared/components/sidebar.php'; ?>
 
         <!-- Main Content -->
         <main class="main-content">
