@@ -170,7 +170,7 @@ $current_module = 'merit_management.php';
             }
 
             // Create QR code data URL (using same method as attendance system)
-            $verification_url = 'http://192.168.0.6/mypetakom/modules/module4/verify_student.php?id=' . $user_id;
+            $verification_url = 'http://10.65.92.215/mypetakom/modules/module4/verify_student.php?id=' . $user_id;
                 ?>                <div class="merit-qr-section">
                     <div class="qr-container">
                         <div class="qr-image">

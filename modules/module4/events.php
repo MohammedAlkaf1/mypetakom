@@ -77,10 +77,8 @@ $current_module = 'events.php';
                         <p><strong>Status:</strong> <?= htmlspecialchars($row['event_status']) ?></p>
                         <p><strong>Description:</strong><br><?= nl2br(htmlspecialchars($row['description'])) ?></p>
                         <p><strong>Geo:</strong> <?= htmlspecialchars($row['geolocation']) ?></p>
-                        <?php if (!empty($row['approval_letter'])): ?>
-                            <p><strong>Approval Letter:</strong>
-                                <a href="../module2/Html_files/<?= htmlspecialchars($row['approval_letter']) ?>" target="_blank">View</a>
-                            </p>
+                        
+                            
                             
                             <?php
                                 $qrPath = "../module2/qr_images/event_" . $row['event_id'] . ".png";
@@ -89,7 +87,7 @@ $current_module = 'events.php';
                                         <img src="<?= $qrPath ?>" alt="QR Code" width="160">
                                     </div>
                             <?php endif; ?>
-                        <?php endif; ?>
+                        
 
                         
                     </div>

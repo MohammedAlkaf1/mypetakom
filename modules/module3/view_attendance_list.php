@@ -37,16 +37,24 @@ if (!$event_title) {
     exit("Error: Event not found.");
 }
 
-// Fetch attendance records for this event
+// Search functionality
+$searchQuery = "";
+if (isset($_POST['search'])) {
+    $searchQuery = trim($_POST['search']);
+}
+
+// Fetch attendance records for this event with optional search
 $query = "
     SELECT us.name, us.email, aslot.status, a.check_in_time
     FROM Attendance_Slot aslot
     JOIN User us ON aslot.user_id = us.user_id
     JOIN Attendance a ON aslot.attendance_id = a.attendance_id
     WHERE a.event_id = ?
+    AND (us.name LIKE ? OR us.email LIKE ?)
 ";
 $stmt = $conn->prepare($query);
-$stmt->bind_param("i", $event_id);
+$searchTerm = "%{$searchQuery}%"; // Adding wildcard for LIKE operator
+$stmt->bind_param("iss", $event_id, $searchTerm, $searchTerm);
 $stmt->execute();
 $result = $stmt->get_result();
 
@@ -68,6 +76,15 @@ $result = $stmt->get_result();
     <?php include_once '../../shared/components/sidebar.php'; ?>
     <main class="main-content">
         <h2 class="mb-4">Attendance List for Event: <?php echo htmlspecialchars($event_title); ?></h2>
+        
+        <!-- Search Form -->
+        <form method="POST" action="" class="mb-4">
+            <div class="input-group">
+                <input type="text" name="search" class="form-control" placeholder="Search by name or email" value="<?php echo htmlspecialchars($searchQuery); ?>" />
+                <button class="btn btn-primary" type="submit">Search</button>
+            </div>
+        </form>
+        
         <div class="table-responsive">
             <table class="table table-bordered table-hover align-middle text-center">
                 <thead class="table-dark">

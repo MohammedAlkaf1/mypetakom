@@ -40,6 +40,15 @@ $total_staff = $result3->fetch_assoc()['total_staff'];
 $sql5 = "SELECT COUNT(*) as pending_memberships FROM membership WHERE status = 'pending'";
 $result5 = $conn->query($sql5);
 $pending_memberships = $result5->fetch_assoc()['pending_memberships'];
+// Fetch total active events
+$sql4 = "SELECT COUNT(*) as active_events FROM event WHERE event_status = 'Active'";
+$result4 = $conn->query($sql4);
+$active_events = $result4->fetch_assoc()['active_events'];
+
+// Fetch total upcoming events
+$sql6 = "SELECT COUNT(*) as upcoming_events FROM event WHERE event_status = 'Upcoming'";
+$result6 = $conn->query($sql6);
+$upcoming_events = $result6->fetch_assoc()['upcoming_events'];
 
 // Get event attendance data for bar chart
 $sql_events = "SELECT e.event_id, e.title, COUNT(aslot.user_id) as attendance_count
@@ -128,6 +137,29 @@ while ($row = $events_result->fetch_assoc()) {
                     </div>
                 </div>
             </div>
+            <div class="row">
+    <!-- Total Active Events Card -->
+    <div class="col-md-3 mb-3">
+        <div class="card text-white bg-info h-100">
+            <div class="card-header">Active Events</div>
+            <div class="card-body d-flex flex-column justify-content-between">
+                <h5 class="card-title"><?php echo $active_events; ?></h5>
+                <p class="card-text">Total active events.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Total Upcoming Events Card -->
+    <div class="col-md-3 mb-3">
+        <div class="card text-white bg-warning h-100">
+            <div class="card-header">Upcoming Events</div>
+            <div class="card-body d-flex flex-column justify-content-between">
+                <h5 class="card-title"><?php echo $upcoming_events; ?></h5>
+                <p class="card-text">Total upcoming events.</p>
+            </div>
+        </div>
+    </div>
+</div>
 
             <!-- Bar Chart Section -->
             <h2>Event Attendance</h2>
